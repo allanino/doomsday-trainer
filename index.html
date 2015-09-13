@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>annyang! Easily add speech recognition to your site</title>
+  <meta name="description" content="Random generate dates and listen for the user to talk the weekday." />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://chancejs.com/chance.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/annyang/2.0.0/annyang.min.js"></script>
+  <script>
+
+  var ddmmyyyy = function(d) {
+    var yyyy = d.getFullYear().toString();
+    var mm = (d.getMonth()+1).toString(); // getMonth() is zero-based
+    var dd  = d.getDate().toString();
+    return (dd[1]?dd:"0"+dd[0]) + '/' + (mm[1]?mm:"0"+mm[0]) + '/' + yyyy; // padding
+   };
+
+  var weekday = new Array(7);
+  weekday[0]=  "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+
+  function DateObject(d) {
+    this.date = d;
+    this.string = ddmmyyyy(d);
+    this.weekday = weekday[this.date.getDay()];
+  }
+
+  var date = null;
+  var start = null;
+  var end = null;
+
+  function setDate(){
+    if(start){
+      end = performance.now();
+      $('#time span').text(Math.floor((end - start)/1000) - 2);
+      $('#time').show();
+    }
+    start = performance.now();
+    date = new DateObject(chance.date({year: Math.floor(Math.random() * 400) + 1700, american: false}));
+    $("#date").text(date.string);
+    //console.log(date.weekday);
+  };
+
+  var sunday = function() {
+    if("Sunday" == date.weekday){
+      $("#results").text("Sunday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Sunday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  var monday = function() {
+    if("Monday" == date.weekday){
+      $("#results").text("Monday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Monday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  var tuesday = function() {
+    if("Tuesday" == date.weekday){
+      $("#results").text("Tuesday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Tuesday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  var wednesday = function() {
+    if("Wednesday" == date.weekday){
+      $("#results").text("Wednesday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Wednesday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  var thursday = function() {
+    if("Thursday" == date.weekday){
+      $("#results").text("Thursday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Thursday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  var friday = function() {
+    if("Friday" == date.weekday){
+      $("#results").text("Friday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Friday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  var saturday = function() {
+    if("Saturday" == date.weekday){
+      $("#results").text("Saturday is right").fadeIn('fast');
+    } else {
+      $("#results").text("Saturday is wrong").fadeIn('fast');
+    };
+    setDate();
+  };
+  if (annyang) {
+    // Let's define a command.
+    var commands = {
+      'sunday': sunday,
+      'monday': monday,
+      'tuesday': tuesday,
+      'wednesday': wednesday,
+      'thursday': thursday,
+      'friday': friday,
+      'saturday': saturday
+    };
+
+    // Add our commands to annyang
+    annyang.addCommands(commands);
+    annyang.debug(true)
+    // Start listening.
+    annyang.start();
+
+  }
+
+  $(document).ready(function(){
+    setDate();
+  });
+  </script>
+
+  <script>
+
+  </script>
+  <link rel="stylesheet" href="css/main.min.css" />
+</head>
+<body>
+  <h1>Weekday!</h1>
+
+  <p>What weekday is this: <span id="date"></span>?</p>
+  <p id="results"></p>
+  <p id="time" style="display: none;">You took <span></span> seconds.</p>
+
+</body>
+</html>
