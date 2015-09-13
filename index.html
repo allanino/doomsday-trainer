@@ -35,73 +35,50 @@
   var end = null;
 
   function setDate(){
-    if(start){
-      end = performance.now();
-      $('#time span').text(Math.floor((end - start)/1000) - 2);
-      $('#time').show();
-    }
+    $('#time').hide();
+    $('#results').hide();
+
     start = performance.now();
     date = new DateObject(chance.date({year: Math.floor(Math.random() * 400) + 1700, american: false}));
     $("#date").text(date.string);
     //console.log(date.weekday);
   };
 
-  var sunday = function() {
-    if("Sunday" == date.weekday){
-      $("#results").text("Sunday is right").fadeIn('fast');
+  function check(day) {
+    if(day == date.weekday){
+      $("#results").text(day + " is right!").fadeIn('fast');
     } else {
-      $("#results").text("Sunday is wrong").fadeIn('fast');
+      $("#results").text(day + " is wrong. It was a " + date.weekday + '.').fadeIn('fast');
     };
-    setDate();
+    $('#results').show();
+    if(start){
+      end = performance.now();
+      $('#time span').text(Math.floor((end - start)/1000) - 2).fadeIn('fast');
+      $('#time').show();
+    }
+  }
+  var sunday = function() {
+    check("Sunday");
   };
   var monday = function() {
-    if("Monday" == date.weekday){
-      $("#results").text("Monday is right").fadeIn('fast');
-    } else {
-      $("#results").text("Monday is wrong").fadeIn('fast');
-    };
-    setDate();
+    check("Monday");
   };
   var tuesday = function() {
-    if("Tuesday" == date.weekday){
-      $("#results").text("Tuesday is right").fadeIn('fast');
-    } else {
-      $("#results").text("Tuesday is wrong").fadeIn('fast');
-    };
-    setDate();
+    check("Tuesday");
   };
   var wednesday = function() {
-    if("Wednesday" == date.weekday){
-      $("#results").text("Wednesday is right").fadeIn('fast');
-    } else {
-      $("#results").text("Wednesday is wrong").fadeIn('fast');
-    };
-    setDate();
+    check("Wednesday");
   };
   var thursday = function() {
-    if("Thursday" == date.weekday){
-      $("#results").text("Thursday is right").fadeIn('fast');
-    } else {
-      $("#results").text("Thursday is wrong").fadeIn('fast');
-    };
-    setDate();
+    check("Thursday");
   };
   var friday = function() {
-    if("Friday" == date.weekday){
-      $("#results").text("Friday is right").fadeIn('fast');
-    } else {
-      $("#results").text("Friday is wrong").fadeIn('fast');
-    };
-    setDate();
+    check("Friday");
   };
   var saturday = function() {
-    if("Saturday" == date.weekday){
-      $("#results").text("Saturday is right").fadeIn('fast');
-    } else {
-      $("#results").text("Saturday is wrong").fadeIn('fast');
-    };
-    setDate();
+    check("Saturday");
   };
+
   if (annyang) {
     // Let's define a command.
     var commands = {
@@ -111,12 +88,25 @@
       'wednesday': wednesday,
       'thursday': thursday,
       'friday': friday,
-      'saturday': saturday
+      'saturday': saturday,
+      'another': setDate,
     };
+
+    // var commands = {
+    //   'domingo': sunday,
+    //   'segunda': monday,
+    //   'terça': tuesday,
+    //   'quarta': wednesday,
+    //   'quinta': thursday,
+    //   'sexta': friday,
+    //   'sábado': saturday
+    // };
+    // annyang.setLanguage('pt-BR');
 
     // Add our commands to annyang
     annyang.addCommands(commands);
-    annyang.debug(true)
+    annyang.debug(true);
+
     // Start listening.
     annyang.start();
 
